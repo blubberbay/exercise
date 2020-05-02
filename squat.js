@@ -17,8 +17,8 @@ let poseNet;
 // output of our ML model is stores in this
 let poses = [];
 
-let canvas_height = 720
-let canvas_width = 600
+let canvas_height = 600
+let canvas_width = 400
 
 let workout; 
 
