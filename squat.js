@@ -52,11 +52,14 @@ function setup() {
   */
   poseNet = ml5.poseNet(webcam_output, modelReady);
 	
+
+	createP("Difficulty");//,10,canvas_height);
   completionSlider = createSlider(0,1,completion, 0.0001 );
-  completionSlider.position(10,canvas_height -5 );
-  
+  //completionSlider.position(10,canvas_height -5 );
+
+	createP("Show Diagnostics");//,10,canvas_height);  
   diagSlider = createSlider(0,1,show_diagnostics,1);
-  diagSlider.position(10,canvas_height + 15);
+  //diagSlider.position(10,canvas_height + 20);
   
   
   /*
@@ -87,7 +90,7 @@ function setup() {
  */
  
 function modelReady() {
-  select('#status').html('Model Loaded');
+  //select('#status').html('Model Loaded');
 }
 
 
@@ -116,14 +119,14 @@ function printInfo(){
 
 	context.fillStyle = "red";
 	context.font = "40px Arial";
-		
+	
 
 	var x = canvas_width*.05;
 	var y = canvas_height*.05;
 	var lineheight = 40;
 
 	if( workout.get_state() === 'inactive' )
-		context.fillText("Raise both hands above your nose", x, y + 0 * lineheight );
+		context.fillText("Raise your hands above your head", x, y + 0 * lineheight );
 	else
 	{
 		context.fillText("Current state: " + workout.get_state(), x, y + 0 * lineheight );
