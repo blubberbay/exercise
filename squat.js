@@ -17,28 +17,19 @@ let poseNet;
 // output of our ML model is stores in this
 let poses = [];
 
-let canvas_height = 600
-let canvas_width = 400
+let canvas_height = 640
+let canvas_width = 480
 
 let workout; 
 
 var completion = 0.40;
 var show_diagnostics = 0;
-//Indices for body parts in pose keypoints
-/*
-let left_hip_index = 11
-let right_hip_index = 12
-let left_knee_index = 13
-let right_knee_index = 14
-*/
-
 
 function setup() {
 
   /* create a box in browser to show our output. Canvas having:
-         width: 640 pixels and
-         height: 480 pixels
   */
+
   createCanvas(canvas_height, canvas_width);
 
   // get webcam input
@@ -107,8 +98,8 @@ function draw() {
   
   // draw the points we have got from the poseNet model
   drawKeypoints();
-
-  //drawSkeleton();
+  drawSkeleton();
+  
   workout.run();
   printInfo();
 }
