@@ -27,6 +27,10 @@ let workout;
 var completion = 0.40;
 var show_diagnostics = 0;
 
+var timer;
+
+
+
 function setup() {
 
   /* create a box in browser to show our output. Canvas having:
@@ -47,6 +51,8 @@ function setup() {
 	
 	room_slider = createSlider(0,3,room_num,1);
   
+  
+  timer = createP("timer");
   /*
     An event or trigger.
     Whenever webcam gives a new image, it is given to the poseNet model.
@@ -62,7 +68,8 @@ function setup() {
    gym.add_room("squats");
    gym.add_room("burpees");
 	
-
+	kevin = new Athlete( "Kevin" );
+	
 
 
   /* Hide the webcam output for now.
@@ -93,13 +100,16 @@ function draw() {
 	//scale(-1.0,1.0);
 //translate(width,0);	
   // show the image we currently have of the webcam output.
+  scale(-1.0,1.0);
+  translate(-width,0);
   image(webcam_output, 0, 0, width, height);
   
   // draw the points we have got from the poseNet model
   drawKeypoints();
   drawSkeleton();
   
-  
+  scale(-1.0,1.0);
+  translate(-width,0);
   
   room_num = room_slider.value();
   
@@ -115,7 +125,9 @@ function draw() {
 		break;
 	default: gym.set_room("Home");
   }
+  
   gym.show_location();
+  kevin.run();
   
  // printInfo();
 }
@@ -143,7 +155,9 @@ function drawKeypoints(){
    */
    let context = canvas.getContext("2d");
    context.fillStyle = "blue";
-  for (let i = 0; i < poses.length; i++) {
+  //for (let i = 0; i < poses.length; i++) {
+	  if( poses.length > 0 ){
+		  let i=0;
     // For each pose detected, loop through all the keypoints
     let pose = poses[i].pose;
     for (let j = 0; j < pose.keypoints.length; j++) {
@@ -174,8 +188,10 @@ function drawSkeleton() {
     Loop through every pose and draw skeleton lines.
    */
   // Loop through all the skeletons detected
-  for (let i = 0; i < poses.length; i++) {
-    let skeleton = poses[i].skeleton;
+  //for (let i = 0; i < 1; i++){//poses.length; i++) {
+    if( poses.length > 0 ){
+		let i = 0;
+	let skeleton = poses[i].skeleton;
     // For every skeleton, loop through all body connections
     for (let j = 0; j < skeleton.length; j++) {
       // line start point
