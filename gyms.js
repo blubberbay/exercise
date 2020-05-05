@@ -20,17 +20,17 @@ function Gym(){
 		this.rooms.get( this.current_room ).display();
 	}
 
-	this.add_room = function(room_name, room = new Room(room_name) )
+	this.add_room = function(room_name, room = new ExerciseRoom(room_name) )
 	{
 		this.rooms.set( room_name, room )
-		this.rooms.get( "Home" ).add_button( room_name, ButtonLocations[ this.rooms.size - 1 ], "blue", room_name, gym.set_room(room_name) ); 
+		this.rooms.get( "Home" ).add_button( room_name, ButtonLocations[ this.rooms.size - 1 ], "blue", room_name,  this.name = room_name ); 
 	}
 	
-	this.activate_button = function(button_name)
+	this.activate_button = function( button_name )
 	{
 		//Get the room, activate the button for that room
-		console.log("Gym activate button", this.rooms.get( this.current_room ) )
-		return this.rooms.get( this.current_room ).activate_button(button_name);
+		console.log("Gym activate button", this.rooms )
+		this.rooms.get( this.current_room );
 	}
 	
 	this.set_room = function( room )
@@ -58,42 +58,6 @@ function Room(name, buttons = new Map() ){
 	this.counter = 0;
 	
 	
-	if( this.name != "Home" )
-	{
-		this.buttons.set( "Home", new Button( ButtonLocations[0][0] * width, ButtonLocations[0][1] * height, ButtonSize, "red", "Home", gym.set_room( "Home" ) ) );
-		this.buttons.set( "Start Timer", new Button( ButtonLocations[1][0] * width, ButtonLocations[1][1] * height, ButtonSize, "red", "Start Timer", gym.get_current_room().start_timer() ) );
-		this.buttons.set( "Stop Timer", new Button( ButtonLocations[2][0] * width, ButtonLocations[2][1] * height, ButtonSize, "red", "Stop Timer", gym.get_current_room().stop_timer() ) );
-		this.buttons.set( "Reset Timer", new Button( ButtonLocations[3][0] * width, ButtonLocations[3][1] * height, ButtonSize, "red", "Reset Timer", gym.get_current_room().reset_timer() ) );
-
-	}
-	
-	this.start_timer = function()
-	{
-		this.counter++;
-		minutes = floor(this.counter/60);
-		seconds = this.counter % 60;
-		
-		return timer.html(minutes + ":" + seconds);		
-	}
-
-	this.stop_timer = function()
-	{
-		minutes = floor(this.counter/60);
-		seconds = this.counter % 60;
-		
-		return timer.html(minutes + ":" + seconds);		
-	}
-
-	this.reset_timer = function()
-	{
-		this.counter=0;
-		minutes = floor(this.counter/60);
-		seconds = this.counter % 60;
-		
-		return timer.html(minutes + ":" + seconds);		
-	}
-
-	
 	this.display = function()
 	{
 		this.draw_buttons();
@@ -108,7 +72,7 @@ function Room(name, buttons = new Map() ){
 	
 	this.add_button = function(name, position, color, txt, action )
 	{
-		console.log("f", name, txt, action );
+		console.log("room add button", name, txt, action );
 		this.buttons.set( name, new Button( position[0] * width, position[1] * height, ButtonSize, color, txt, action ) ); 
 	}
 	
@@ -143,10 +107,24 @@ function Room(name, buttons = new Map() ){
 	
 	this.activate_button = function(button_name) 
 	{
-		console.log( "e", button_name, this.buttons.get( button_name) );
-		return this.buttons.get( button_name ).activate_button();
+		console.log( "room activate button", button_name, this.buttons.get( button_name) );
+		return this.buttons.get( button_name ).get( action );//activate_button();
 	}
 }
+
+
+function ExerciseRoom( name, buttons = new Map() )
+{
+	Room.call(this, name, buttons );
+	
+	this.buttons.set( "Home", new Button( ButtonLocations[0][0] * width, ButtonLocations[0][1] * height, ButtonSize, "red", "Home", this.name = "New Name" ) );
+	this.buttons.set( "Start Timer", new Button( ButtonLocations[1][0] * width, ButtonLocations[1][1] * height, ButtonSize, "red", "Start Timer", this.name = "Start TImer" ) );
+	this.buttons.set( "Stop Timer", new Button( ButtonLocations[2][0] * width, ButtonLocations[2][1] * height, ButtonSize, "red", "Stop Timer", this.name = "Stop TImer" ) );
+	this.buttons.set( "Reset Timer", new Button( ButtonLocations[3][0] * width, ButtonLocations[3][1] * height, ButtonSize, "red", "Reset Timer", this.name = "Start TImer" ) );
+	
+}
+ExerciseRoom.prototype = Object.create(Room.prototype);
+
 
 function Button(x,y,radius,color,txt, action )
 {
@@ -156,7 +134,7 @@ function Button(x,y,radius,color,txt, action )
 	this.color = color;
 	this.txt = txt;
 	this.font = "10px Arial"
-	this.action = action;
+	this.action = function(){ action };
 	
 	console.log("In BUtton", x,y,radius,color,txt, action );
 	
@@ -182,8 +160,34 @@ function Button(x,y,radius,color,txt, action )
 		//context.fillText(this.x, this.y, this.txt);
 	}
 	
-	this.activate_button = function()
+		this.start_timer = function( )
 	{
-		this.action
+		this.get_current_room().counter++;
+		minutes = floor(this.get_current_room().counter/60);
+		seconds = this.get_current_room().counter % 60;
+		
+		timer.html(minutes + ":" + seconds);		
+	}
+
+	this.stop_timer = function()
+	{
+		minutes = floor(this.get_current_room().counter/60);
+		seconds = this.get_current_room().counter % 60;
+		
+		timer.html(minutes + ":" + seconds);		
+	}
+
+	this.reset_timer = function()
+	{
+		this.get_current_room().counter=0;
+		minutes = floor(this.get_current_room().counter/60);
+		seconds = this.get_current_room().counter % 60;
+		
+		return timer.html(minutes + ":" + seconds);		
+	}
+
+	this.set_room = function( room )
+	{
+		this.set_room( room );
 	}
 }
