@@ -49,9 +49,7 @@ function setup() {
   */
   poseNet = ml5.poseNet(webcam_output, modelReady);
 	
-	room_slider = createSlider(0,3,room_num,1);
-  
-  
+    
   timer = createP("timer");
   /*
     An event or trigger.
@@ -65,8 +63,8 @@ function setup() {
   });
   	
 	gym = new Gym();
-   gym.add_room("squats");
-   gym.add_room("burpees");
+    gym.add_room("Squats");
+    gym.add_room("Burpees");
 	
 	kevin = new Athlete( "Kevin" );
 	
@@ -110,22 +108,7 @@ function draw() {
   
   scale(-1.0,1.0);
   translate(-width,0);
-  
-  room_num = room_slider.value();
-  
-  switch( room_num ){
-	  case 0: 
-		gym.set_room("Home");
-		break;
-	case 1:
-		gym.set_room("squats");
-		break;
-	case 2:
-		gym.set_room("burpees");
-		break;
-	default: gym.set_room("Home");
-  }
-  
+    
   gym.show_location();
   kevin.run();
   
