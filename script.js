@@ -17,9 +17,8 @@ let poseNet;
 // output of our ML model is stores in this
 let poses = [];
 
-let canvas_height = 400
-let canvas_width = 400
-
+let canvas_height = 700
+let canvas_width = 700
 var room_num = 0;
 
 let workout; 
@@ -29,6 +28,7 @@ var show_diagnostics = 0;
 
 var timer;
 
+var RoomButtonColor = [ 'darkred', 'white']
 
 
 function setup() {
@@ -37,10 +37,11 @@ function setup() {
   */
 
   createCanvas(canvas_height, canvas_width);
-
+  
   // get webcam input
   webcam_output = createCapture(VIDEO);
-  // set webcam video to the same height and width of our canvas
+ 
+ // set webcam video to the same height and width of our canvas
   webcam_output.size(canvas_width, canvas_height);
 
   /* Create a new poseNet model. Input:
@@ -48,8 +49,9 @@ function setup() {
       2) a function "modelReady" when the model is loaded and ready to use
   */
   poseNet = ml5.poseNet(webcam_output, modelReady);
+
+	console.log(poseNet)
 	
-    
   timer = createP("timer");
   /*
     An event or trigger.
@@ -94,23 +96,22 @@ function modelReady() {
 */
 function draw() {
 
+	var draw_eyes = false;
 
-	//scale(-1.0,1.0);
-//translate(width,0);	
   // show the image we currently have of the webcam output.
   scale(-1.0,1.0);
-  translate(-width,0);
-  image(webcam_output, 0, 0, width, height);
+  translate(-canvas_width,0);
+  image(webcam_output, 0, 0, canvas_width, canvas_height);
   
   // draw the points we have got from the poseNet model
-  drawKeypoints();
+  drawKeypoints(draw_eyes);
   drawSkeleton();
   
   scale(-1.0,1.0);
-  translate(-width,0);
+  translate(-canvas_width,0);
     
   gym.show_location();
-  kevin.run();
+  kevin.run(gym);
   
  // printInfo();
 }
@@ -119,7 +120,7 @@ function printInfo(){
 	let canvas = document.getElementById("defaultCanvas0");
 	let context = canvas.getContext("2d");
 
-	context.fillStyle = "red";
+	context.fillStyle = "darkred";
 	context.font = "40px Arial";
 	
 
@@ -131,25 +132,40 @@ function printInfo(){
 
 
 // A function to draw detected points on the image.
-function drawKeypoints(){
+function drawKeypoints(draw_eyes){
   /*
     Remember we saved all the result from the poseNet output in "poses" array.
     Loop through every pose and draw keypoints
    */
    let context = canvas.getContext("2d");
-   context.fillStyle = "blue";
+   context.fillStyle = "darkblue";
   //for (let i = 0; i < poses.length; i++) {
 	  if( poses.length > 0 ){
 		  let i=0;
     // For each pose detected, loop through all the keypoints
     let pose = poses[i].pose;
+	
+	if( draw_eyes )
+	{
+		fill('red')
+		ellipse( pose.nose.x, pose.nose.y, 20, 20 )
+		
+		fill('white')
+		ellipse( pose.leftEye.x, pose.leftEye.y, 30, 20 )
+		ellipse( pose.rightEye.x, pose.rightEye.y, 30, 20 )
+		
+		fill('black')
+		ellipse( pose.leftEye.x, pose.leftEye.y, 10, 10 )
+		ellipse( pose.rightEye.x, pose.rightEye.y, 10, 10 )
+	}
+	
     for (let j = 0; j < pose.keypoints.length; j++) {
       // A keypoint is an object describing a body part (like rightArm or leftShoulder)
       let keypoint = pose.keypoints[j];
       // Only draw an ellipse if the pose probability is bigger than 0.2
       if (keypoint.score > 0.2) {
         // choosing colour. RGB where each colour ranges from 0 255
-        fill(0, 0, 255);
+        //fill(0, 0, 255);
         // disable drawing outline
         noStroke();
         /* draw a small ellipse. Which being so small looks like a dot. Purpose complete.

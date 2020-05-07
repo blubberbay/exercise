@@ -23,12 +23,13 @@ function Gym( start_room = "Home" ){
 	this.add_room = function(room_name, room = new ExerciseRoom(room_name) )
 	{
 		this.rooms.set( room_name, room )
-		this.rooms.get( "Home" ).add_change_room_button( room_name, ButtonLocations[ this.rooms.size - 1 ], ["blue","white"] );  
+		this.rooms.get( "Home" ).add_change_room_button( room_name, ButtonLocations[ this.rooms.size - 1 ], RoomButtonColor );  
 	}
 	
 	this.get_current_room_buttons = function()
 	{
 		room = this.get_current_room()
+
 		return room.get_buttons();
 		
 	}

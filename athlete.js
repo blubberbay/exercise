@@ -9,7 +9,7 @@ function Athlete( name )
 	
 	this.pose = [];
 	
-	this.run = function()
+	this.run = function( gym )
 	{
 		//check if hand 
 		if( poses.length > 0 )
@@ -17,16 +17,28 @@ function Athlete( name )
 		
 		if( Object.keys(this.pose).length > 0 ) //WARNING, this assumes poses can carry over from one frame to another
 		{	
-			this.check_activation()
+
+			this.check_button_activation(gym)
 		}
 		//set room state based on pose
+		current_room = gym.get_current_room()
+
+			//console.log("in athlete run", gym )
 		
+		if( current_room.room_type == "exercise" )
+		{
+			if( current_room.timer_running )
+			{
+				//console.log("in athlete run and timer running", current_room.exercise);
+				current_room.exercise.run()
+		
+			}
+		}
 	}
 	
-	this.check_activation = function()
+	this.check_button_activation = function( gym ) //Loop over buttons to see if any button has been activated
 	{
 		var notFound = true
-
 		
 		for( const [button_name, button_values] of gym.get_current_room_buttons().entries() )
 		{
@@ -45,7 +57,6 @@ function Athlete( name )
 			{
 				if( this.current_activation == button_name )
 				{
-					//console.log(button_name, this.counter );
 					this.counter += 1;
 					if( this.counter >= this.max_counter)
 					{

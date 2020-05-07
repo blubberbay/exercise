@@ -5,8 +5,13 @@ function Button(x,y,radius,color,txt="" )
 	this.radius = radius;
 	this.color = color;
 	this.txt = txt;
-	this.font = "10px Arial"
+	this.font = "bold 12px Arial"
 	this.state = "inactive"
+	
+	this.get_state = function()
+	{
+		return this.state
+	}
 	
 	this.button_pressed = function()
 	{
@@ -44,34 +49,60 @@ function Button(x,y,radius,color,txt="" )
 		context.fillStyle = this.get_color();
 		noStroke();
 		ellipse(this.x, this.y, this.radius, this.radius);
-		context.font = "10px Arial";
-		context.fillStyle = "white";
+		context.font = this.font;
+		context.fillStyle = fill("white")
 		text( this.txt, this.x - textWidth( this.txt) / 2, this.y ); 
-		//context.fillText(this.x, this.y, this.txt);
+		//context.fillText(this.x - textWidth( this.txt) / 2, this.y, this.txt);
 		
 		this.button_depressed() //after displaying a button make sure it's inactive
 		
 	}
 }
-function PatternButton(x, y, radius, color, txt, layers =3 ){
+
+/*
+function make_rings(x,y,radius,n_rings,color)
+{
+  shapes = {}
+  states = ["active","inactive"];
+  
+  for( j=0; j<2; j++ )
+  {
+	PShape rings;
+	rings = createShape(GROUP);
+
+	  noStroke()
+	for( var i = 0; i <n_rings; i++ )
+	{
+		radius = this.radius/5 * (1 - Math.pow(0.5, 2*(i+1))) 
+		head = ellipse(x, y, radius, radius ) 
+		head.setFill( c )
+		rings.addChild(head);
+	}
+	
+	shapes[ states[j] ] = grp 
+	}
+console.log(shapes[states[1]])
+	return shapes
+}
+*/
+function PatternButton(x, y, radius, color, txt, n_rings =3 ){
 	Button.call(this, x,y,radius,color, txt );	
-	this.layers = layers
+	this.n_rings = n_rings
+	
+	this.rings = make_rings( this.x, this.y, this.radius, this.color, this.n_rings )
 	
 	this.display_button = function()
 	{
-		context = canvas.getContext("2d");
-		for( var i = 0; i<layers; i++ )
-		{
-			context.fillStyle = fill('rgb(0,0,200,0)')
-			noStroke();
-			radius = this.radius * (1 - (2*i) / (2*this.layers) ) 
-			ellipse( this.x, this.y, radius, radius )
+		    context = canvas.getContext("2d");
+			this.rings[ this.get_state() ];
 
-			context.fillStyle = this.get_color();
-			noStroke();
-			radius = this.radius * (1 - (2*i+1) / (2*this.layers) ) 
-			ellipse( this.x, this.y, radius, radius )
-		}
+			context.font = this.font;
+			context.fillStyle = fill("white");
+			text( this.txt, this.x - textWidth( this.txt) / 2, this.y ); 
+			//context.fillText(this.x, this.y, this.txt);
+		
+			this.button_depressed() //after displaying a button make sure it's inactive
+
 	}
 }
 PatternButton.prototype = Object.create(Button.prototype);
