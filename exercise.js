@@ -38,7 +38,7 @@ function Exercise()
 
 		context.fillStyle = fill( "darkred");
 		context.font = "30px Arial";
-		text( this.counter, canvas_width*.90, canvas_height ); 
+		text( this.counter, canvas_width*.935, canvas_height*.965 ); 
 	}
 
 	this.get_PositionInfo = function(body_part)

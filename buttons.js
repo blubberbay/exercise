@@ -46,7 +46,7 @@ function Button(x,y,radius,color,txt="" )
         // disable drawing outline
 		
 		context = canvas.getContext("2d");
-		context.fillStyle = this.get_color();
+		context.fillStyle = fill(this.get_color());
 		noStroke();
 		ellipse(this.x, this.y, this.radius, this.radius);
 		context.font = this.font;

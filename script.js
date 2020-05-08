@@ -29,6 +29,7 @@ var show_diagnostics = 0;
 var timer;
 
 var RoomButtonColor = [ 'darkred', 'white']
+var ExerciseButtonColor = ["darkblue","darkred"]
 var Exercises = {"Squats": new Squats(), "Burpees": new Burpees()};
 
 

@@ -8,7 +8,7 @@ function Room(name, buttons = new Map() ){
 	{
 		this.draw_buttons();
 		this.show_name();
-		
+		this.draw_body();
 		
 		this.show_activity( this.show_body_parts );
 	}
@@ -33,6 +33,28 @@ function Room(name, buttons = new Map() ){
 		
 	}
 	
+	this.draw_body = function()
+	{
+		this.draw_head()
+		this.draw_waist()
+	}
+	
+	this.draw_head = function()
+	{
+		context = canvas.getContext("2d");
+		stroke(153);
+		strokeWeight(4);
+		context.fillStyle = fill('rgba(0,0,0,0)');
+		ellipse(canvas_width*0.5, canvas_height * 0.1, 0.1*canvas_width, 0.15*canvas_height );
+	}
+	
+	this.draw_waist = function()
+	{
+		stroke(153);
+		strokeWeight(4);
+		line(canvas_width*0.4, canvas_height*0.55, canvas_width*0.6, canvas_height*0.55 )
+		
+	}
 	
 	this.get_buttons = function()
 	{
@@ -46,9 +68,9 @@ function Room(name, buttons = new Map() ){
 	this.show_name = function()
 	{
 		context = canvas.getContext("2d");
-		context.fillStyle = fill( "#bb0000");
-		context.font = "30px Arial";
-		context.fillText(name, width * .5 - 20, height * .10);
+		context.fillStyle = fill( "darkred" );
+		context.font = "bold 30px Arial";
+		context.fillText(name, width * .5 - 20, height * .95);
 		
 	}
 	
@@ -57,6 +79,7 @@ function Room(name, buttons = new Map() ){
 		return this.buttons.get( button_name ).get( action );//activate_button();
 	}
 }
+
 
 
 function ExerciseRoom( name, buttons = new Map() )
@@ -69,10 +92,11 @@ function ExerciseRoom( name, buttons = new Map() )
 
 	//this.exercise = new Exercise( name );
 	
+	
 	this.buttons.set( "Home", new ChangeRoom( ButtonLocations[0][0] * width, ButtonLocations[0][1] * height, ButtonSize, RoomButtonColor, "Home") );
-	this.buttons.set( "Start Timer", new StartTimerButton( ButtonLocations[1][0] * width, ButtonLocations[1][1] * height, ButtonSize, ["darkblue","darkred"] ) );
-	this.buttons.set( "Stop Timer", new StopTimerButton( ButtonLocations[3][0] * width, ButtonLocations[3][1] * height, ButtonSize, ["darkblue","darkred"] ) );
-	this.buttons.set( "Reset Timer", new ResetTimerButton( ButtonLocations[4][0] * width, ButtonLocations[4][1] * height, ButtonSize, ["darkblue","darkred"] ) );
+	this.buttons.set( "Start Timer", new StartTimerButton( ButtonLocations[1][0] * width, ButtonLocations[1][1] * height, ButtonSize, ExerciseButtonColor ) );
+	this.buttons.set( "Stop Timer", new StopTimerButton( ButtonLocations[2][0] * width, ButtonLocations[2][1] * height, ButtonSize, ExerciseButtonColor ) );
+	this.buttons.set( "Reset Timer", new ResetTimerButton( ButtonLocations[3][0] * width, ButtonLocations[3][1] * height, ButtonSize, ExerciseButtonColor ) );
 	//this.buttons.set( "Settings", new SettingsButton( ButtonLocations[5][0] * width, ButtonLocations[5][1] * height, ButtonSize, ["darkblue","darkred"] ) );
 	
 	
@@ -156,9 +180,11 @@ function BurpeeRoom(name, buttons = new Map())
 		
 	}
 	
+	
+	
 	this.display = function()
 	{
-		
+		this.draw_body();
 		this.draw_buttons();
 		this.show_name();
 		this.draw_bar();

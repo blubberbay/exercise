@@ -1,11 +1,12 @@
 var canvas_pct = 0.1;
 var ButtonLocations = [];
 ButtonLocations[0] = [canvas_pct, canvas_pct];
-ButtonLocations[1] = [canvas_pct, .5];
-ButtonLocations[2] = [canvas_pct, 1.0 - canvas_pct];
+ButtonLocations[1] = [canvas_pct, (0.5 + canvas_pct)/2];
+ButtonLocations[2] = [canvas_pct, 0.5];
+
 ButtonLocations[3] = [1.0-canvas_pct, canvas_pct];
-ButtonLocations[4] = [1.0 - canvas_pct, .5];
-ButtonLocations[5] = [1.0 - canvas_pct, 1.0 - canvas_pct];
+ButtonLocations[4] = [1.0-canvas_pct, (0.5 + canvas_pct)];
+ButtonLocations[5] = [1.0 - canvas_pct, .5];
 
 var ButtonSize = 100;
 
