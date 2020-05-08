@@ -11,14 +11,14 @@
 */
 
 // the output of our webcam
-let webcam_output;
+var webcam_output;
 // to store the ML model
-let poseNet;
+var poseNet;
 // output of our ML model is stores in this
-let poses = [];
+var poses = [];
 
-let canvas_height = 700
-let canvas_width = 700
+var canvas_height = 700
+var canvas_width = 700
 var room_num = 0;
 
 let workout; 
@@ -29,6 +29,7 @@ var show_diagnostics = 0;
 var timer;
 
 var RoomButtonColor = [ 'darkred', 'white']
+var Exercises = {"Squats": new Squats(), "Burpees": new Burpees()};
 
 
 function setup() {
@@ -48,9 +49,20 @@ function setup() {
       1) give our present webcam output
       2) a function "modelReady" when the model is loaded and ready to use
   */
-  poseNet = ml5.poseNet(webcam_output, modelReady);
-
-	console.log(poseNet)
+    var posenetoptions = { 
+    imageScaleFactor: 0.3,
+    outputStride: 16,
+    flipHorizontal: false,
+    minConfidence: 0.8,
+    maxPoseDetections: 1, //detect only single pose
+    scoreThreshold: 0.5,
+    nmsRadius: 20,
+    detectionType: 'single', //detect only single pose
+    multiplier: 0.75,
+  };
+  
+  poseNet = ml5.poseNet(webcam_output, posenetoptions, 'single', modelReady);//
+  //poseNet = ml5.poseNet(webcam_output, modelReady);
 	
   timer = createP("timer");
   /*
@@ -65,9 +77,9 @@ function setup() {
   });
   	
 	gym = new Gym();
-    gym.add_room("Squats");
-    gym.add_room("Burpees");
-	
+    gym.add_room("Burpees", room = new BurpeeRoom( "Burpees" ));
+	gym.add_room("Squats");
+    
 	kevin = new Athlete( "Kevin" );
 	
 
@@ -86,7 +98,12 @@ function setup() {
  */
  
 function modelReady() {
-  //select('#status').html('Model Loaded');
+      //select('#status').html('Model Loaded');
+    
+    // When the model is ready, run the singlePose() function...
+    // If/When a pose is detected, poseNet.on('pose', ...) will be listening for the detection results 
+    // in the draw() loop, if there are any poses, then carry out the draw commands
+    //poseNet.singlePose(img)
 }
 
 
@@ -115,7 +132,7 @@ function draw() {
   
  // printInfo();
 }
-
+/*
 function printInfo(){
 	let canvas = document.getElementById("defaultCanvas0");
 	let context = canvas.getContext("2d");
@@ -129,7 +146,7 @@ function printInfo(){
 	var lineheight = 40;
 	
 }
-
+*/
 
 // A function to draw detected points on the image.
 function drawKeypoints(draw_eyes){

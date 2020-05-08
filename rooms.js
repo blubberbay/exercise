@@ -1,8 +1,7 @@
 function Room(name, buttons = new Map() ){
 	this.name = name;
 	this.buttons = buttons;
-	this.exercise =  Exercises[ name ];
-	this.show_body_parts = true
+	this.show_body_parts = false
 	this.room_type = "base";
 	
 	this.display = function()
@@ -33,6 +32,7 @@ function Room(name, buttons = new Map() ){
 		}
 		
 	}
+	
 	
 	this.get_buttons = function()
 	{
@@ -65,12 +65,16 @@ function ExerciseRoom( name, buttons = new Map() )
 	this.timer_running = false
 	this.timer = 0;
 	this.room_type = "exercise";
+	this.exercise =  Exercises[ name ];
+
 	//this.exercise = new Exercise( name );
 	
 	this.buttons.set( "Home", new ChangeRoom( ButtonLocations[0][0] * width, ButtonLocations[0][1] * height, ButtonSize, RoomButtonColor, "Home") );
 	this.buttons.set( "Start Timer", new StartTimerButton( ButtonLocations[1][0] * width, ButtonLocations[1][1] * height, ButtonSize, ["darkblue","darkred"] ) );
 	this.buttons.set( "Stop Timer", new StopTimerButton( ButtonLocations[3][0] * width, ButtonLocations[3][1] * height, ButtonSize, ["darkblue","darkred"] ) );
 	this.buttons.set( "Reset Timer", new ResetTimerButton( ButtonLocations[4][0] * width, ButtonLocations[4][1] * height, ButtonSize, ["darkblue","darkred"] ) );
+	//this.buttons.set( "Settings", new SettingsButton( ButtonLocations[5][0] * width, ButtonLocations[5][1] * height, ButtonSize, ["darkblue","darkred"] ) );
+	
 	
 	this.start_timer = function( )
 	{
@@ -127,6 +131,7 @@ function ExerciseRoom( name, buttons = new Map() )
 		}
 				context.font = "bold 30px Arial"
 				context.fillStyle = fill("darkred");
+				stroke(0,0,0)
 			context.fillText(this.exercise.get_state(), x, canvas_height*0.95 )
 		
 	}
@@ -134,4 +139,33 @@ function ExerciseRoom( name, buttons = new Map() )
 	
 }
 ExerciseRoom.prototype = Object.create(Room.prototype);
+
+function BurpeeRoom(name, buttons = new Map())
+{
+	ExerciseRoom.call(this,name,buttons);
+	
+	this.draw_bar = function()
+	{
+		var downtarget = this.exercise.downtarget;
+		var uptarget = this.exercise.uptarget;
+		//context = canvas.getContext("2d");
+		//context.fillStype = fill('red')
+		strokeWeight(4);
+		stroke(255, 0,0);
+		line(0, this.exercise.get_target(), canvas_width, this.exercise.get_target());
+		
+	}
+	
+	this.display = function()
+	{
+		
+		this.draw_buttons();
+		this.show_name();
+		this.draw_bar();
+		
+		this.show_activity( this.show_body_parts );
+	}
+}
+BurpeeRoom.prototype = Object.create(ExerciseRoom.prototype);
+
 
