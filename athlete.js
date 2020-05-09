@@ -3,7 +3,7 @@ function Athlete( name )
 	this.name = name;
 	this.current_room = gym.get_current_room();
 	this.counter = 0;
-	this.max_counter = 20;
+	this.max_counter = 25;
 	this.current_activation = "";
 	this.min_confidence = 0.2;
 	
@@ -43,12 +43,12 @@ function Athlete( name )
 		for( const [button_name, button_values] of gym.get_current_room_buttons().entries() )
 		{
 			button_dims = button_values.get_button_dims();
-			left_distance = Math.pow( (width - this.pose.leftWrist.x )  - button_dims[0], 2) + Math.pow( this.pose.leftWrist.y - button_dims[1], 2)
-			right_distance = Math.pow( (width - this.pose.rightWrist.x) - button_dims[0], 2) + Math.pow(this.pose.rightWrist.y - button_dims[1], 2) 
+			left_distance = Math.pow( mirror_x(this.pose.leftWrist.x )  - button_dims[0], 2) + Math.pow( this.pose.leftWrist.y - button_dims[1], 2)
+			right_distance = Math.pow( mirror_x( this.pose.rightWrist.x ) - button_dims[0], 2) + Math.pow(this.pose.rightWrist.y - button_dims[1], 2) 
 			left_confidence = this.pose.leftWrist.confidence;
 			right_confidence = this.pose.rightWrist.confidence;
 			
-			nose_distance = Math.pow( (width - this.pose.nose.x )  - button_dims[0], 2) + Math.pow( this.pose.nose.y - button_dims[1], 2)
+			nose_distance = Math.pow( mirror_x( this.pose.nose.x )  - button_dims[0], 2) + Math.pow( this.pose.nose.y - button_dims[1], 2)
 			nose_confidence = this.pose.nose.confidence;
 
 			if( ( left_distance <= Math.pow( button_dims[2], 2 ) & left_confidence >= this.min_confidence ) 
