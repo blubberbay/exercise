@@ -26,11 +26,14 @@ let workout;
 var completion = 0.40;
 var show_diagnostics = 0;
 
+HEAD_HEIGHT = 0.15;
+HEAD_WIDTH = 0.1;
+
 var timer;
 
 var RoomButtonColor = [ 'darkred', 'white']
 var ExerciseButtonColor = ["darkblue","darkred"]
-var Exercises = {"Squats": new Squats(), "Burpees": new Burpees()};
+var Exercises = {"Squats": new Squats(), "Burpees": new Burpees(), "Whacka": new Whacka()};
 
 
 function setup() {
@@ -80,6 +83,7 @@ function setup() {
 	gym = new Gym();
     gym.add_room("Burpees", room = new BurpeeRoom( "Burpees" ));
 	gym.add_room("Squats");
+	gym.add_room("Whacka", room = new WhackaRoom( "Whacka") );
     
 	kevin = new Athlete( "Kevin" );
 	
@@ -226,4 +230,10 @@ function drawSkeleton() {
       line(startPoint.position.x, startPoint.position.y, endPoint.position.x, endPoint.position.y);
     }
   }
+}
+
+function mirror_x( x )
+{
+	return ( canvas_width - x );
+	
 }

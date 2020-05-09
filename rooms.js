@@ -45,7 +45,7 @@ function Room(name, buttons = new Map() ){
 		stroke(153);
 		strokeWeight(4);
 		context.fillStyle = fill('rgba(0,0,0,0)');
-		ellipse(canvas_width*0.5, canvas_height * 0.1, 0.1*canvas_width, 0.15*canvas_height );
+		ellipse(canvas_width*0.5, canvas_height * 0.1, HEAD_WIDTH*canvas_width, HEAD_HEIGHT*canvas_height );
 	}
 	
 	this.draw_waist = function()
@@ -194,4 +194,28 @@ function BurpeeRoom(name, buttons = new Map())
 }
 BurpeeRoom.prototype = Object.create(ExerciseRoom.prototype);
 
+function WhackaRoom( name, buttons = new Map() )
+{
+	ExerciseRoom.call(this, name, buttons);
 
+	this.draw_target = function()
+	{
+		context = canvas.getContext("2d");
+		stroke("red");
+		strokeWeight(4);
+		context.fillStyle = fill('rgba(0,0,0,0)');
+		target = this.exercise.get_target();
+		ellipse(target[0], target[1], HEAD_WIDTH*canvas_width, HEAD_HEIGHT*canvas_height );
+	}
+	
+		this.display = function()
+	{
+		this.draw_body();
+		this.draw_buttons();
+		this.show_name();
+		this.draw_target();
+		
+		this.show_activity( this.show_body_parts );
+	}
+	
+}
